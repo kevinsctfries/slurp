@@ -9,9 +9,10 @@
     padding: 2rem;
     width: 50%;
 
-    p {
-        margin-top: 20px;
-        font-size: 1.1rem;
+    .url-copy-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
 
         a {
             color: var(--link-color);
@@ -19,6 +20,18 @@
 
             &:hover {
                 text-decoration: underline;
+            }
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+
+            img {
+                width: 20px;
+                height: 20px;
             }
         }
     }
