@@ -3,7 +3,7 @@
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 8px 20px var(--container-shadow);
-    width: 600px;
+    width: 50%;
     margin-bottom: 1rem;
 
     h1 {
@@ -21,6 +21,7 @@
 
     input[type="text"] {
         flex: 1;
+        min-width: 0;
         padding: 10px 15px;
         border-radius: 6px 0 0 6px;
         border: 1px solid var(--input-border);
@@ -47,5 +48,11 @@
         &:hover {
             background-color: var(--button-hover-bg);
         }
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .app-container {
+        width: 80vw;
     }
 }
