@@ -5,12 +5,15 @@ import "./App.scss";
 
 function App() {
   const [shortUrl, setShortUrl] = useState("");
-  const [theme, setTheme] = useState("system");
 
   const getSystemTheme = () =>
     window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
+
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "system";
+  });
 
   useEffect(() => {
     if (theme === "system") {
@@ -18,6 +21,8 @@ function App() {
     } else {
       document.documentElement.setAttribute("data-theme", theme);
     }
+
+    localStorage.setItem("theme", theme);
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleSystemThemeChange = () => {
@@ -32,16 +37,21 @@ function App() {
 
   const toggleTheme = () => {
     setTheme(prev => {
-      if (prev === "system")
-        return getSystemTheme() === "dark" ? "light" : "dark";
-      return prev === "light" ? "dark" : "light";
+      if (prev === "system") {
+        const newTheme = getSystemTheme() === "dark" ? "light" : "dark";
+        localStorage.setItem("theme", newTheme);
+        return newTheme;
+      }
+      const newTheme = prev === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newTheme);
+      return newTheme;
     });
   };
 
-  const iconSrc =
-    theme === "light" || (theme === "system" && getSystemTheme() === "light")
-      ? "/sun.svg"
-      : "/moon.svg";
+  const currentSystemTheme = getSystemTheme();
+  const effectiveTheme = theme === "system" ? currentSystemTheme : theme;
+
+  const iconSrc = effectiveTheme === "light" ? "/sun.svg" : "/moon.svg";
 
   return (
     <div className="app-wrapper">
