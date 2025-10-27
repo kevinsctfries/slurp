@@ -18,7 +18,7 @@
 
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --background-color: #1a1a1a;
     --text-color: #e0e0e0;
     --container-bg: #2c2c2c;
@@ -29,6 +29,18 @@
     --button-hover-bg: #104e8b;
     --link-color: #1e90ff;
   }
+}
+
+[data-theme="dark"] {
+  --background-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --container-bg: #2c2c2c;
+  --container-shadow: rgba(0, 0, 0, 0.3);
+  --input-border: #555;
+  --button-bg: #1e90ff;
+  --button-text: #fff;
+  --button-hover-bg: #104e8b;
+  --link-color: #1e90ff;
 }
 
 html,
