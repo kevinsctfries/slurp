@@ -3,6 +3,7 @@ import UrlShortener from "./components/UrlShortener/UrlShortener";
 import QRCodeGenerator from "./components/QRCodeGenerator/QRCodeGenerator";
 import ThemeToggle from "./components/ThemeToggle/ThemeToggle";
 import "./App.scss";
+import LinkHistory from "./components/LinkHistory/LinkHistory";
 
 function App() {
   const [shortUrl, setShortUrl] = useState("");
@@ -26,6 +27,7 @@ function App() {
       <h2 className="app-subheader">SLURP Links URLs Rapidly and Precisely</h2>
       <UrlShortener setShortUrl={setShortUrl} />
       {shortUrl && <QRCodeGenerator url={shortUrl} />}
+      <LinkHistory />
     </div>
   );
 }
