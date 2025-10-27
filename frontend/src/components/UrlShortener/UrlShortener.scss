@@ -1,9 +1,10 @@
 .app-container {
     background-color: var(--container-bg);
-    padding: 40px 50px;
+    padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 8px 20px var(--container-shadow);
     width: 600px;
+    margin-bottom: 1rem;
 
     h1 {
         margin-bottom: 25px;
@@ -45,20 +46,6 @@
 
         &:hover {
             background-color: var(--button-hover-bg);
-        }
-    }
-
-    p {
-        margin-top: 20px;
-        font-size: 1.1rem;
-
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
-            }
         }
     }
 }

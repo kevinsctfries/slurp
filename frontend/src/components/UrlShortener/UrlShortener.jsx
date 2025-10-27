@@ -2,9 +2,8 @@ import { useState } from "react";
 import axios from "axios";
 import "./UrlShortener.scss";
 
-function App() {
+function UrlShortener({ setShortUrl }) {
   const [url, setUrl] = useState("");
-  const [shortUrl, setShortUrl] = useState("");
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -26,13 +25,8 @@ function App() {
         />
         <button type="submit">Shorten</button>
       </form>
-      {shortUrl && (
-        <p>
-          Shortened URL: <a href={shortUrl}>{shortUrl}</a>
-        </p>
-      )}
     </div>
   );
 }
 
-export default App;
+export default UrlShortener;
