@@ -15,7 +15,7 @@ function UrlShortener({ setShortUrl }) {
 
   return (
     <div className="app-container">
-      <h1>URL Shortener</h1>
+      <h2>Paste URL:</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
