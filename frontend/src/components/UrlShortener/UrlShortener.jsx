@@ -10,15 +10,17 @@ function UrlShortener({ setShortUrl, setLinkHistory }) {
     const res = await axios.post(
       "http://localhost:5124/api/shorten?url=" + encodeURIComponent(url)
     );
-    const newUrl = res.data.shortUrl;
-    setShortUrl(newUrl);
+    const shortenedUrl = res.data.shortUrl;
+    setShortUrl(shortenedUrl);
 
     // saves links to localStorage
     const stored = JSON.parse(localStorage.getItem("linkHistory")) || [];
-    const updated = [
-      { url: newUrl, original: url, createdAt: Date.now() },
-      ...stored,
-    ];
+    const newLink = {
+      original: url,
+      shortened: shortenedUrl,
+      createdAt: Date.now(),
+    };
+    const updated = [newLink, ...stored];
     localStorage.setItem("linkHistory", JSON.stringify(updated));
     setLinkHistory(updated);
   };
