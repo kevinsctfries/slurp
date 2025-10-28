@@ -25,9 +25,7 @@ function UrlShortener({ setShortUrl, setLinkHistory }) {
 
     setError("");
 
-    const res = await axios.post(
-      "http://localhost:5124/api/shorten?url=" + encodeURIComponent(url)
-    );
+    const res = await axios.post("/api/shorten", { url: trimmedUrl });
     const shortenedUrl = res.data.shortUrl;
     setShortUrl(shortenedUrl);
 
