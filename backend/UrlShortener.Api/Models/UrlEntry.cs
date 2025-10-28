@@ -1,5 +1,3 @@
-using System;
-
 namespace UrlShortener.Api.Models
 {
     public class UrlEntry
