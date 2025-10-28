@@ -15,7 +15,10 @@ function UrlShortener({ setShortUrl, setLinkHistory }) {
 
     // saves links to localStorage
     const stored = JSON.parse(localStorage.getItem("linkHistory")) || [];
-    const updated = [{ original: url, shortened: newUrl }, ...stored];
+    const updated = [
+      { url: newUrl, original: url, createdAt: Date.now() },
+      ...stored,
+    ];
     localStorage.setItem("linkHistory", JSON.stringify(updated));
     setLinkHistory(updated);
   };

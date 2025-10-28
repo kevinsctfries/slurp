@@ -1,13 +1,24 @@
+import { useEffect, useState } from "react";
 import "./LinkHistory.scss";
 
-export default function LinkHistory({ links }) {
+export default function LinkHistory({ links: initalLinks }) {
+  const [links, setLinks] = useState([]);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("linkHistory")) || [];
+    const filtered = stored.filter(
+      link => Date.now() - link.createdAt < 24 * 60 * 60 * 1000
+    );
+
+    localStorage.setItem("linkHistory", JSON.stringify(filtered));
+    setLinks(filtered);
+  }, [initalLinks]);
+
   if (!links || links.length === 0) return null;
 
   const handleCopy = url => {
     navigator.clipboard.writeText(url).catch(console.error);
   };
-
-  if (links.length === 0) return null;
 
   return (
     <div className="link-history">
