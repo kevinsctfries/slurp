@@ -23,8 +23,12 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors("AllowFrontend");
 
-var cleanupInterval = TimeSpan.FromHours(1);
-var cleanupThreshold = TimeSpan.FromHours(24);
+var cleanupInterval = TimeSpan.FromHours(
+    double.Parse(Environment.GetEnvironmentVariable("CLEANUP_INTERVAL_HOURS") ?? "1")
+);
+var cleanupThreshold = TimeSpan.FromHours(
+    double.Parse(Environment.GetEnvironmentVariable("CLEANUP_THRESHOLD_HOURS") ?? "24")
+);
 
 var cancellationTokenSource = new CancellationTokenSource();
 _ = Task.Run(async () => 
