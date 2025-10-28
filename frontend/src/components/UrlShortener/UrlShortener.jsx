@@ -4,9 +4,27 @@ import "./UrlShortener.scss";
 
 function UrlShortener({ setShortUrl, setLinkHistory }) {
   const [url, setUrl] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = async e => {
     e.preventDefault();
+
+    const trimmedUrl = url.trim();
+
+    if (!trimmedUrl) {
+      setError("Please enter a URL.");
+      return;
+    }
+
+    try {
+      new URL(trimmedUrl);
+    } catch {
+      setError("Not a valid URL.");
+      return;
+    }
+
+    setError("");
+
     const res = await axios.post(
       "http://localhost:5124/api/shorten?url=" + encodeURIComponent(url)
     );
@@ -25,6 +43,11 @@ function UrlShortener({ setShortUrl, setLinkHistory }) {
     setLinkHistory(updated);
   };
 
+  const handleChange = e => {
+    setUrl(e.target.value);
+    setError("");
+  };
+
   return (
     <div className="app-container">
       <h2>Paste URL:</h2>
@@ -32,11 +55,12 @@ function UrlShortener({ setShortUrl, setLinkHistory }) {
         <input
           type="text"
           value={url}
-          onChange={e => setUrl(e.target.value)}
+          onChange={handleChange}
           placeholder="Enter your URL"
         />
         <button type="submit">Shorten</button>
       </form>
+      {error && <span className="error-message">{error}</span>}
     </div>
   );
 }
