@@ -33,7 +33,6 @@ namespace UrlShortener.Tests
         [Fact]
         public async Task CleanupService_Removes_Old_Urls()
         {
-            // Arrange
             var db = CreateInMemoryDb();
 
             db.Urls.AddRange(

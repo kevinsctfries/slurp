@@ -67,7 +67,8 @@ app.MapPost("/api/shorten", async (AppDbContext db, HttpRequest request) =>
     db.Urls.Add(entry);
     await db.SaveChangesAsync();
 
-    return Results.Ok(new { shortUrl = $"http://localhost:5124/s/{shortCode}" });
+    var baseUrl = $"{request.Scheme}://{request.Host}";
+    return Results.Ok(new { shortUrl = $"{baseUrl}/s/{shortCode}" });
 });
 
 app.MapGet("/s/{code}", async (AppDbContext db, string code) =>

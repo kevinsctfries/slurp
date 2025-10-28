@@ -4,14 +4,14 @@ EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
-COPY ["UrlShortener.Api/UrlShortener.Api.csproj", "UrlShortener.Api/"]
-RUN dotnet restore "UrlShortener.Api/UrlShortener.Api.csproj"
-COPY . .
-WORKDIR "/src/UrlShortener.Api"
-RUN dotnet build "UrlShortener.Api.csproj" -c Release -o /app/build
+COPY UrlShortener.Api/*.csproj ./UrlShortener.Api/
+RUN dotnet restore ./UrlShortener.Api/UrlShortener.Api.csproj
+COPY UrlShortener.Api/ ./UrlShortener.Api/
+WORKDIR /src/UrlShortener.Api
+RUN dotnet build -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "UrlShortener.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
