@@ -23,6 +23,35 @@ using (var scope = app.Services.CreateScope())
 
 app.UseCors("AllowFrontend");
 
+var cleanupInterval = TimeSpan.FromHours(1);
+var cleanupThreshold = TimeSpan.FromHours(24);
+
+var cancellationTokenSource = new CancellationTokenSource();
+_ = Task.Run(async () => 
+{
+    while (!cancellationTokenSource.Token.IsCancellationRequested)
+    {
+        try
+        {
+            using var scope = app.Services.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            var cutoff = DateTime.UtcNow - cleanupThreshold;
+            var oldLinks = await db.Urls.Where(u => u.CreatedAt < cutoff).ToListAsync();
+            if (oldLinks.Any())
+            {
+                db.Urls.RemoveRange(oldLinks);
+                await db.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error during cleanup: {ex.Message}");
+        }
+
+        await Task.Delay(cleanupInterval, cancellationTokenSource.Token);
+    }
+});
+
 app.MapPost("/api/shorten", async (AppDbContext db, string url) =>
 {
     var shortCode = Guid.NewGuid().ToString().Substring(0, 6);
@@ -38,5 +67,7 @@ app.MapGet("/s/{code}", async (AppDbContext db, string code) =>
     if (entry == null) return Results.NotFound();
     return Results.Redirect(entry.OriginalUrl);
 });
+
+app.Lifetime.ApplicationStopping.Register(() => cancellationTokenSource.Cancel());
 
 app.Run();

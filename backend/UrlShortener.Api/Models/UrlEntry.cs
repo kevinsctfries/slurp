@@ -1,9 +1,12 @@
-namespace UrlShortener.Api.Models;
+using System;
 
-public class UrlEntry
+namespace UrlShortener.Api.Models
 {
-    public int Id {get; set; }
-    public string ShortCode { get; set; } = string.Empty;
-    public string OriginalUrl { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public class UrlEntry
+{
+        public int Id {get; set; }
+        public string ShortCode { get; set; } = string.Empty;
+        public string OriginalUrl { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+}
 }
