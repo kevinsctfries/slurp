@@ -1,13 +1,7 @@
-import { useEffect, useState } from "react";
 import "./LinkHistory.scss";
 
-export default function LinkHistory() {
-  const [links, setLinks] = useState([]);
-
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("linkHistory")) || [];
-    setLinks(stored);
-  }, []);
+export default function LinkHistory({ links }) {
+  if (!links || links.length === 0) return null;
 
   const handleCopy = url => {
     navigator.clipboard.writeText(url).catch(console.error);

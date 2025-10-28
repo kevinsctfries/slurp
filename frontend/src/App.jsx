@@ -7,6 +7,9 @@ import LinkHistory from "./components/LinkHistory/LinkHistory";
 
 function App() {
   const [shortUrl, setShortUrl] = useState("");
+  const [linkHistory, setLinkHistory] = useState(
+    JSON.parse(localStorage.getItem("linkHistory")) || []
+  );
   const [theme, setTheme] = useState(
     () => localStorage.getItem("theme") || "system"
   );
@@ -25,9 +28,9 @@ function App() {
       <ThemeToggle theme={theme} setTheme={setTheme} />
       <h1 className="app-header">SLURP</h1>
       <h2 className="app-subheader">SLURP Links URLs Rapidly and Precisely</h2>
-      <UrlShortener setShortUrl={setShortUrl} />
+      <UrlShortener setShortUrl={setShortUrl} setLinkHistory={setLinkHistory} />
       {shortUrl && <QRCodeGenerator url={shortUrl} />}
-      <LinkHistory />
+      <LinkHistory links={linkHistory} />
     </div>
   );
 }

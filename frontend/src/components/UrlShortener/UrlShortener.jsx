@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import "./UrlShortener.scss";
 
-function UrlShortener({ setShortUrl }) {
+function UrlShortener({ setShortUrl, setLinkHistory }) {
   const [url, setUrl] = useState("");
 
   const handleSubmit = async e => {
@@ -17,6 +17,7 @@ function UrlShortener({ setShortUrl }) {
     const stored = JSON.parse(localStorage.getItem("linkHistory")) || [];
     const updated = [{ original: url, shortened: newUrl }, ...stored];
     localStorage.setItem("linkHistory", JSON.stringify(updated));
+    setLinkHistory(updated);
   };
 
   return (
