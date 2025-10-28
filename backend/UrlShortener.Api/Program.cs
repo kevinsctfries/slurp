@@ -56,13 +56,18 @@ _ = Task.Run(async () =>
     }
 });
 
-app.MapPost("/api/shorten", async (AppDbContext db, string url) =>
+app.MapPost("/api/shorten", async (AppDbContext db, HttpRequest request) =>
 {
+    var body = await request.ReadFromJsonAsync<ShortenRequest>();
+    if (body == null || string.IsNullOrWhiteSpace(body.Url))
+        return Results.BadRequest("URL is required.");
+
     var shortCode = Guid.NewGuid().ToString().Substring(0, 6);
-    var entry = new UrlEntry { ShortCode = shortCode, OriginalUrl = url };
+    var entry = new UrlEntry { ShortCode = shortCode, OriginalUrl = body.Url };
     db.Urls.Add(entry);
     await db.SaveChangesAsync();
-    return Results.Ok(new { shortUrl = $"http://localhost:5124/s/{shortCode}"});
+
+    return Results.Ok(new { shortUrl = $"http://localhost:5124/s/{shortCode}" });
 });
 
 app.MapGet("/s/{code}", async (AppDbContext db, string code) =>
@@ -75,3 +80,7 @@ app.MapGet("/s/{code}", async (AppDbContext db, string code) =>
 app.Lifetime.ApplicationStopping.Register(() => cancellationTokenSource.Cancel());
 
 app.Run();
+
+record ShortenRequest(string Url);
+
+public partial class Program { }
